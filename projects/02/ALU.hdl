@@ -43,4 +43,26 @@ CHIP ALU {
 
     PARTS:
    // Put you code here:
+   Mux16(a=x, b=false, sel=zx, out=zxd);
+   Not16(in=zxd, out=notzxd);
+   Mux16(a=zxd, b=notzxd, sel=nx, out=nxd);
+   Mux16(a=y, b=false, sel=zy, out=zyd);
+   Not16(in=zyd, out=notzyd);
+   Mux16(a=zyd, b=notzyd, sel=ny, out=nyd);
+   Add16(a=nxd, b=nyd, out=xaddy);
+   And16(a=nxd, b=nyd, out=xandy);
+   Mux16(a=xandy, b=xaddy, sel=f, out=fd);
+   Not16(in=fd, out=nfd);
+   Mux16(a=fd, b=nfd, sel=no, out=finalout);  // output is the out we want
+   Not16(in=finalout, out=notout);  // make output to be used for control wires and outpt
+   Not16(in=notout, out=out);  // outpin to be final out
+   And16(a=finalout, b=true, out[0..7]=lowout, out[8..15]=highout);
+   Or8Way(in=lowout, out=lowresult);
+   Or8Way(in=highout, out=highresult);
+   Or(a=lowresult, b=highresult, out=zrsel);
+   Mux(a=true, b=false, sel=zrsel, out=zr); // output zr
+   And16(a=finalout, b=true, out[0..14]=out15, out[15]=outneg);
+   Mux(a=false, b=true, sel=outneg, out=ng); // output ng
+
+
 }
