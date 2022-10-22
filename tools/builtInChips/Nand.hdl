@@ -7,7 +7,7 @@
  * Nand gate: out = a Nand b.
  */
 
-CHIP Nand {
+CHIP Nand{
 
     IN  a, b;
     OUT out;
