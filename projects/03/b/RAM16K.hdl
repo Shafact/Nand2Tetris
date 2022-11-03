@@ -11,9 +11,19 @@
  */
 
 CHIP RAM16K {
-    IN in[16], load, address[14];
+    IN in[16], load, address[15];
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    // Put your code here: similar to RAM4K, last three bits in address is to choose which RAM4K; the first 12 bits of address is to choose which output
+    DMux8Way(in=load, sel=address[12..14], a=Ram0, b=Ram1, c=Ram2, d=Ram3, e=Ram4, f=Ram5, g=Ram6, h=Ram7); // last three bits in address is to choose which RAM
+    RAM4K(in=in, load=Ram0, address=address[0..11], out=out0);  //first nine bits in address is to choose which RAM54K to output
+    RAM4K(in=in, load=Ram1, address=address[0..11], out=out1);
+    RAM4K(in=in, load=Ram2, address=address[0..11], out=out2);
+    RAM4K(in=in, load=Ram3, address=address[0..11], out=out3);
+    RAM4K(in=in, load=Ram4, address=address[0..11], out=out4);
+    RAM4K(in=in, load=Ram5, address=address[0..11], out=out5);
+    RAM4K(in=in, load=Ram6, address=address[0..11], out=out6);
+    RAM4K(in=in, load=Ram7, address=address[0..11], out=out7);
+    Mux8Way16(a=out0, b=out1, c=out2, d=out3, e=out4, f=out5, g=out6, h=out7, sel=address[12..14], out=out); //  choose which ram4K to output
 }

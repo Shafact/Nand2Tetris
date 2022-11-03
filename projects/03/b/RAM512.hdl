@@ -15,5 +15,16 @@ CHIP RAM512 {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    // Put your code here: similar to RAM64, last three bits in address is to choose which RAM64; the first 6 bits of address is to choose which output
+    DMux8Way(in=load, sel=address[6..8], a=Ram0, b=Ram1, c=Ram2, d=Ram3, e=Ram4, f=Ram5, g=Ram6, h=Ram7); // last three bits in address is to choose which RAM
+    RAM64(in=in, load=Ram0, address=address[0..5], out=out0);  //first six bits in address is to choose which RAM64 to output
+    RAM64(in=in, load=Ram1, address=address[0..5], out=out1);
+    RAM64(in=in, load=Ram2, address=address[0..5], out=out2);
+    RAM64(in=in, load=Ram3, address=address[0..5], out=out3);
+    RAM64(in=in, load=Ram4, address=address[0..5], out=out4);
+    RAM64(in=in, load=Ram5, address=address[0..5], out=out5);
+    RAM64(in=in, load=Ram6, address=address[0..5], out=out6);
+    RAM64(in=in, load=Ram7, address=address[0..5], out=out7);
+    Mux8Way16(a=out0, b=out1, c=out2, d=out3, e=out4, f=out5, g=out6, h=out7, sel=address[6..8], out=out); //  choose which ram64 to output
+
 }
